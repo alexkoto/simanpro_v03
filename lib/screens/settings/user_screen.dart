@@ -29,8 +29,6 @@ class _UserScreenState extends State<UserScreen> {
     });
   }
 
-  
-
   Future<void> _logout() async {
     if (!mounted) return;
 
@@ -127,7 +125,7 @@ class _UserScreenState extends State<UserScreen> {
           const CircleAvatar(
             radius: 50,
             backgroundColor: Colors.blueAccent,
-            
+
             child: Icon(Icons.person, size: 50, color: Colors.white),
           ),
           const SizedBox(height: 16),
@@ -210,7 +208,7 @@ class _UserScreenState extends State<UserScreen> {
       case '6':
         return 'Karyawan';
       default:
-        return 'Teknisi';
+        return 'Tenaga Teknik';
     }
   }
 }
