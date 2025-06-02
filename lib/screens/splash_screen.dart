@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:simanpro_v03/screens/auth/login.dart';
+import 'package:simanpro_v03/screens/home/home_screen.dart';
 // import 'package:simanpro_v02/screens/home_screen.dart';
 import 'dart:async';
+
+import 'package:simanpro_v03/services/local_storage.dart';
 
 
 class SplashScreen extends StatefulWidget {
@@ -14,19 +17,44 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   @override
-  void initState() {
-    super.initState();
+  // void initState() {
+  //   super.initState();
+    
 
-    Timer(const Duration(seconds: 4), () {
+  //   Timer(const Duration(seconds: 4), () {
+  //     Navigator.pushReplacement(
+  //       context,
+  //       MaterialPageRoute(
+  //         builder: (_) => LoginScreen(),
+  //       ), // ganti halaman tujuan
+  //     );
+  //   });
+  // }
+void initState() {
+  super.initState();
+  _navigateAfterDelay();
+}
+
+Future<void> _navigateAfterDelay() async {
+  await Future.delayed(const Duration(seconds: 4));
+  final authData = await LocalStorage.getAuthData();
+
+  if (authData['rememberMe'] == true && authData['token'] != null) {
+    if (mounted) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(
-          // builder: (_) => const HomeScreen(),
-          builder: (_) => LoginScreen(),
-        ), // ganti halaman tujuan
+        MaterialPageRoute(builder: (_) => const HomeScreen()),
       );
-    });
+    }
+  } else {
+    if (mounted) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => LoginScreen()),
+      );
+    }
   }
+}
 
   @override
   Widget build(BuildContext context) {

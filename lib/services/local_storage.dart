@@ -50,8 +50,8 @@ class LocalStorage {
     final prefs = await _getInstance();
     if (prefs == null) return {};
     return {
-      'token': prefs.getString(_authTokenKey),
-      'email': prefs.getString(_userEmailKey),
+      'token': prefs.getString(_authTokenKey) ?? '',
+      'email': prefs.getString(_userEmailKey) ?? '',
       'rememberMe': prefs.getBool(_rememberMeKey) ?? false,
     };
   }
