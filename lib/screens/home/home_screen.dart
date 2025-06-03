@@ -3,7 +3,7 @@ import 'package:simanpro_v03/services/local_storage.dart';
 import 'package:simanpro_v03/widgets/screen_navigator.dart';
 import '../settings/notification_screen.dart';
 import '../settings/setting_screen.dart';
-import '../settings/user_screen.dart';
+import '../user/user_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -59,8 +59,17 @@ class _HomeScreenState extends State<HomeScreen> {
     ],
     'hr': [
       {'title': 'Absensi Online', 'icon': Icons.fingerprint},
-      {'title': 'Skill Matrix', 'icon': Icons.grid_view},
+      {'title': 'Daftar Karyawan', 'icon': Icons.people_alt_outlined},
+      {'title': 'Pengajuan Cuti', 'icon': Icons.beach_access_outlined},
+      {'title': 'Pengajuan Gaji', 'icon': Icons.monetization_on_outlined},
+      {'title': 'Matriks Kinerja', 'icon': Icons.grid_view},
       {'title': 'Timesheet', 'icon': Icons.schedule_outlined},
+      {'title': 'Laporan Kinerja', 'icon': Icons.bar_chart_outlined},
+      {'title': 'Pelatihan & Pengembangan', 'icon': Icons.school_outlined},
+      {
+        'title': 'Payroll Management',
+        'icon': Icons.account_balance_wallet_outlined,
+      },
     ],
     'qc': [
       {'title': 'Inspeksi Harian', 'icon': Icons.task_alt},

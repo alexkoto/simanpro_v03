@@ -170,10 +170,16 @@ class _UserScreenState extends State<UserScreen> {
           ),
           const SizedBox(height: 20),
           ElevatedButton.icon(
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Fitur edit belum tersedia')),
+            onPressed: () async {
+              final result = await Navigator.pushNamed(
+                context,
+                '/edit-profile',
+                arguments: _userData,
               );
+
+              if (result == true) {
+                _loadUserData(); // Refresh data profil
+              }
             },
             icon: const Icon(Icons.edit),
             label: const Text('Edit Profil'),
@@ -182,6 +188,7 @@ class _UserScreenState extends State<UserScreen> {
               backgroundColor: Colors.blue,
             ),
           ),
+
           const SizedBox(height: 16),
           TextButton.icon(
             onPressed: _logout,

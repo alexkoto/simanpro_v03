@@ -9,6 +9,12 @@ class ApiUser {
   static const String registerEndpoint = '/user/register.php';
   static const String usersEndpoint = '/user/users.php';
   static const String userEndpoint = '/user/user.php';
+  static const String logoutEndpoint = '/user/logout.php';
+  static const String updateProfileEndpoint = '/user/update_profile.php';
+  static const String updateUserEndpoint = '/user/update_user.php';
+  static const String deleteUserEndpoint = '/user/delete_user.php';
+  static const String getUserByIdEndpoint = '/user/get_user_by_id.php';
+  static const String getAllUsersEndpoint = '/user/get_all_users.php';
 
   // Common headers
   static const Map<String, String> headers = {
@@ -138,23 +144,47 @@ class ApiUser {
   }
 
   // Get all users
+  /*
   static Future<List<dynamic>> getAllUsers() async {
+    
     try {
       final response = await http
           .get(
-            Uri.parse('${ApiConnection.baseUrl}$usersEndpoint'),
+            Uri.parse('${ApiConnection.baseUrl}$getAllUsersEndpoint'),
             headers: headers,
           )
           .timeout(timeout);
 
       final result = _handleResponse(response);
+      print('Get Users result: $result'); // Tambahkan ini
+
       if (result['success'] == true) {
+        print('Data Users: ${result['data']}'); // Tambahkan ini juga
         return result['data'] ?? [];
       }
       return [];
     } catch (e) {
       print('Get Users Exception: $e');
       return [];
+    }
+  }
+  */
+  static Future<List<dynamic>> getAllUsers() async {
+    final response = await http.get(
+      Uri.parse('${ApiConnection.baseUrl}$getAllUsersEndpoint'),
+    );
+
+    if (response.statusCode == 200) {
+      final result = jsonDecode(response.body);
+      print("API raw response: $result");
+
+      if (result['success'] == true && result['data'] is List) {
+        return result['data'];
+      } else {
+        throw Exception('Gagal mendapatkan data: ${result['message']}');
+      }
+    } else {
+      throw Exception('Gagal koneksi ke server');
     }
   }
 
@@ -270,6 +300,27 @@ class ApiUser {
         'status': 0,
         'message': 'Invalid server response format',
       };
+    }
+  }
+
+  static Future<Map<String, dynamic>> updateUserProfile({
+    required String id,
+    required String name,
+    required String phone,
+  }) async {
+    try {
+      final response = await http
+          .post(
+            Uri.parse('${ApiConnection.baseUrl}/user/update_profile.php'),
+            headers: await getAuthHeaders(),
+            body: {'id': id, 'name': name, 'phone': phone},
+          )
+          .timeout(timeout);
+
+      return _handleResponse(response);
+    } catch (e) {
+      print('Update Profile Exception: $e');
+      return {'success': false, 'message': 'Gagal memperbarui profil.'};
     }
   }
 }

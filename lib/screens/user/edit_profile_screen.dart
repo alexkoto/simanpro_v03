@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simanpro_v03/services/api_users.dart';
 import 'package:simanpro_v03/services/local_storage.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -89,14 +90,47 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     // Implementasi upload gambar
   }
 
-  void _saveProfile() async {
+void _saveProfile() async {
+  final updatedName = _nameController.text;
+  final updatedPhone = _phoneController.text;
+  final userId = widget.userData['id'].toString();
+
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) => const Center(child: CircularProgressIndicator()),
+  );
+
+  final result = await ApiUser.updateUserProfile(
+    id: userId,
+    name: updatedName,
+    phone: updatedPhone,
+  );
+
+  if (mounted) Navigator.pop(context); // Close dialog
+
+  if (result['success'] == true) {
     final updatedData = {
       ...widget.userData,
-      'name': _nameController.text,
-      'phone': _phoneController.text,
+      'name': updatedName,
+      'phone': updatedPhone,
     };
 
     await LocalStorage.saveUserData(updatedData);
-    Navigator.pop(context, true); // Kembali dengan status sukses
+
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Profil berhasil diperbarui')),
+      );
+      Navigator.pop(context, true);
+    }
+  } else {
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(result['message'] ?? 'Gagal memperbarui profil')),
+      );
+    }
   }
+}
+
 }
